@@ -30,10 +30,10 @@ stocks=['QQQ','SPY','XLP','XLE','USO','XLRE','GLD','SLV','XLV','XLK','XLY','TLT'
 stocks.sort()
 a=stock_data(stocks)
 a=a.dropna()
-a
+
 
 b=pct_ret_log(a)
-b
+
 
 plt.figure(figsize=(15,15))
 heatmap=sb.heatmap(round(b.corr(),2), vmin=-1, vmax=1, annot=True)
