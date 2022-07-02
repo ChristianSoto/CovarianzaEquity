@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import pandas as pd
 import seaborn as sb
 import pandas_datareader as pdr
@@ -7,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import datetime as dt
 import requests
+import math
 
 #La API de Yahoo requiere headers para establecer la conexión y devolver la data
 USER_AGENT = {
@@ -34,9 +33,17 @@ a=a.dropna()
 
 b=pct_ret_log(a)
 
+plt.style.use('dark_background')
+desvest= pd.DataFrame(round(b.std()*100*math.sqrt(250),2))
+desvest.columns=['Volatilidad']
+fig,ax=plt.subplots(figsize=(30,15),ncols=2)
+sb.heatmap(round(b.corr(),2), vmin=-1, vmax=1, annot=True,ax=ax[0])
+ax[0].tick_params(axis='y', labelsize=14)
+ax[0].tick_params(axis='x', labelsize=14)
+ax[1].bar(desvest.index,desvest['Volatilidad'],color='red')
+ax[1].grid(alpha=0.5)
+ax[1].set_title('Volatilidad anual del activo',fontsize=14)
+ax[1].tick_params(axis='y', labelsize=14)
+ax[1].tick_params(axis='x', labelsize=14)
 
-plt.figure(figsize=(15,15))
-heatmap=sb.heatmap(round(b.corr(),2), vmin=-1, vmax=1, annot=True)
-heatmap.set_title('Correlación entre principales índices y ETFs', fontdict={'fontsize':14}, pad=10)
 plt.show()
-
